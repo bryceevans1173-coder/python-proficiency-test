@@ -1,0 +1,6 @@
+[project]
+name = "stat386-python-fluency-check"
+version = "1.0.0"
+description = "Automatically graded Python readiness assessment for STAT 386"
+requires-python = ">=3.11"
+dependencies = []
