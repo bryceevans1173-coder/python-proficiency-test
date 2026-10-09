@@ -4,6 +4,7 @@ Complete each function and the ScoreTracker class. Keep the public names and
 function signatures unchanged. You may add private helper functions if useful.
 """
 
+from xmlrpc.client import Boolean
 from __future__ import annotations
 
 
@@ -25,7 +26,25 @@ def describe_value(value: object) -> str:
 
     Remember that Boolean values require careful handling when checking types.
     """
-    raise NotImplementedError
+    if type(value) == 'NoneType':
+        return "none"
+    elif type(value) == 'bool':
+        return "boolean"
+    elif type(value) == 'int':
+        return "integer"
+    elif type(value) == 'float':
+        return "float"
+    elif type(value) == 'str':
+        return "string"
+    elif type(value) == 'list':
+        return "list"
+    elif type(value) == 'tuple':
+        return "tuple"
+    elif type(value) == 'dict':
+        return "dictionary"
+    elif type(value) == 'set':
+        return "set"
+    else: return "other"
 
 
 def categorize_temperature(celsius: float) -> str:
@@ -37,7 +56,16 @@ def categorize_temperature(celsius: float) -> str:
     - From 25 up to, but not including, 35: ``"warm"``
     - 35 or above: ``"hot"``
     """
-    raise NotImplementedError
+    if celsius < 0:
+        return "freezing"
+    elif celsius >= 0 & celsius < 10:
+        return "cold"
+    elif celsius >= 10 & celsius < 25:
+        return "mild"
+    elif celsius >= 25 & celsius < 35:
+        return "warm"
+    else:
+        return "hot"
 
 
 def running_totals(values: list[int | float]) -> list[int | float]:
