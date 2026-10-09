@@ -77,7 +77,14 @@ def running_totals(values: list[int | float]) -> list[int | float]:
 
     Do not modify the input list.
     """
-    raise NotImplementedError
+    total = 0
+    cumulative = []
+
+    for i in range(len(values)):
+        total += values[i]
+        cumulative[i] = total
+
+    return cumulative
 
 
 def select_values(
@@ -94,7 +101,30 @@ def select_values(
         ``select_values([1, 4, 7], minimum=4)`` returns ``[4, 7]``.
         ``select_values([1, 4, 7], maximum=4)`` returns ``[1, 4]``.
     """
-    raise NotImplementedError
+    if minimum == None & maximum == None:
+        return values
+
+    filtered = []
+
+    if minimum != None & maximum != None:
+        for value in values:
+            if value >= minimum & value <= maximum:
+                filtered.append(value)
+        return filtered
+    
+    elif minimum != None & maximum == None:
+        for value in values:
+            if value >= minimum:
+                filtered.append(value)
+        return filtered
+
+    elif minimum == None & maximum != None:
+        for value in values:
+            if value <= maximum:
+                filtered.append(value)
+        return filtered
+    
+    else: raise ValueError
 
 
 def word_counts(text: str) -> dict[str, int]:
@@ -110,7 +140,14 @@ def word_counts(text: str) -> dict[str, int]:
     ``"Data, data-driven data!"`` becomes
     ``{"data": 2, "data-driven": 1}``.
     """
-    raise NotImplementedError
+    words = text.strip()
+    words = words.split(" ")
+
+    words_dict = {}
+    for word in words:
+        words_dict[word] += 1
+
+    return words_dict
 
 
 def mean_by_group(records: list[dict[str, object]]) -> dict[str, float]:
@@ -125,7 +162,19 @@ def mean_by_group(records: list[dict[str, object]]) -> dict[str, float]:
         {"group": "A", "value": 4}, {"group": "B", "value": None}]``
         produce ``{"A": 3.0}``.
     """
-    raise NotImplementedError
+    means = {}
+
+    for record in records:
+        total = 0
+        n_elements = 0
+        for element in record:
+            if record[element] == "None":
+                continue
+            total += record[element]
+            n_elements += 1
+        means[record] = total / n_elements
+
+    return means
 
 
 def safe_divide(numerator: object, denominator: object) -> float | None:
@@ -134,7 +183,12 @@ def safe_divide(numerator: object, denominator: object) -> float | None:
     Return ``None`` when Python raises either ``TypeError`` or
     ``ZeroDivisionError``. Other exceptions should not be suppressed.
     """
-    raise NotImplementedError
+    try:
+        return numerator / denominator
+    except TypeError:
+        return "None"
+    except ZeroDivisionError:
+        return "None"
 
 
 class ScoreTracker:
@@ -145,7 +199,8 @@ class ScoreTracker:
 
     def __init__(self, name: str) -> None:
         """Store ``name`` and initialize an empty public ``scores`` list."""
-        raise NotImplementedError
+        self.name = name
+        self.scores = []
 
     def add_score(self, score: int | float) -> None:
         """Add a score from 0 through 100, inclusive.
@@ -154,13 +209,29 @@ class ScoreTracker:
         values are not valid scores. Raise ``ValueError`` when a numeric score
         is outside the allowed range.
         """
-        raise NotImplementedError
+        if type(score) is not int or type(score) is not float:
+            raise TypeError
+        if score > 100 or score < 0:
+            raise ValueError
+
+        self.scores.append(score)
 
     def average(self) -> float | None:
         """Return the arithmetic mean, or ``None`` when there are no scores."""
-        raise NotImplementedError
+        if len(self.scores) < 1:
+            return "None"
+
+        return self.scores.mean()
 
     def count_at_or_above(self, threshold: int | float = 60) -> int:
         """Return the number of scores greater than or equal to ``threshold``."""
-        raise NotImplementedError
+        good_scores = 0
+        
+        if len(self.scores) < 1:
+            return good_scores
+
+        for score in self.scores:
+            if score >= threshold:
+                good_scores += 1
+        return good_scores
 
